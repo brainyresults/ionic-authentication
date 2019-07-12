@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>aluno</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label>Item</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="unread(item)">Adicionar</ion-item-option>
+        <ion-item-option (click)="unread(item)">Editar</ion-item-option>
+        <ion-item-option (click)="unread(item)">Remover</ion-item-option>
+
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
