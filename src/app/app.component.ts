@@ -7,6 +7,8 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 //auth
 import { AuthService } from "./services/auth.service";
 import { Router } from "@angular/router";
+// user
+import { UserService } from './services/user.service';
 
 @Component({
   selector: "app-root",
@@ -17,6 +19,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    // user
+    private user: UserService,
     //auth
     private authService: AuthService,
     private router: Router //final auth
@@ -25,13 +29,18 @@ export class AppComponent {
   }
 
   initializeApp() {
+    let that:any = this;
+
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
       this.authService.authenticationState.subscribe(state => {
         if (state) {
-          this.router.navigate(["aluno"]);
+          let me = this.user.getMe().then(res => {
+            console.log('me', res);
+            this.router.navigate(["aluno"]);
+          })
         } else {
           this.router.navigate(["login"]);
         }

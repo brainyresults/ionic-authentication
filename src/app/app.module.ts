@@ -10,9 +10,10 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 
 //auth
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { Storage, IonicStorageModule } from "@ionic/storage";
 import { JwtModule, JWT_OPTIONS } from "@auth0/angular-jwt";
+import { AuthInterceptor } from './services/auth.interceptor';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -47,7 +48,15 @@ export function jwtOptionsFactory(storage) {
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { 
+      provide: RouteReuseStrategy, 
+      useClass: IonicRouteStrategy 
+    },
+    {
+      provide : HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi   : true,
+    },    
   ],
   bootstrap: [AppComponent]
 })

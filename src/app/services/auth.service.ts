@@ -13,8 +13,9 @@ const TOKEN_KEY = "access_token";
   providedIn: "root"
 })
 export class AuthService {
+  token:string;
   url = environment.url;
-  user = null;
+  user:any;
   authenticationState = new BehaviorSubject(false);
 
   constructor(
@@ -29,6 +30,10 @@ export class AuthService {
     });
   }
 
+  getToken(){
+    return this.token;
+  }
+  
   checkToken() {
     this.storage.get(TOKEN_KEY).then(token => {
       if (token) {
@@ -57,6 +62,7 @@ export class AuthService {
   login(credentials) {
     return this.http.post(`${this.url}/users/login`, credentials).pipe(
       tap(res => {
+        this.token = res["token"];
         this.storage.set(TOKEN_KEY, res["token"]);
         this.user = this.helper.decodeToken(res["token"]);
         this.authenticationState.next(true);
