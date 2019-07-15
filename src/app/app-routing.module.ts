@@ -15,6 +15,9 @@ const routes: Routes = [
   { path: 'personal', loadChildren: './pages/personal/personal.module#PersonalPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
   { path: 'lista', loadChildren: './pages/lista/lista.module#ListaPageModule' },
+  { path: 'save-edit', loadChildren: './pages/crud/save-edit/save-edit.module#SaveEditPageModule' },
+  { path: 'delete', loadChildren: './pages/crud/delete/delete.module#DeletePageModule' },
+  { path: 'list', loadChildren: './pages/crud/list/list.module#ListPageModule' },
 ];
 
 @NgModule({
