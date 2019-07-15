@@ -46,7 +46,7 @@ export class AuthService {
   }
 
   register(credentials) {
-    return this.http.post(`${this.url}/api/register`, credentials).pipe(
+    return this.http.post(`${this.url}/users/register`, credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.msg);
         throw new Error(e);
@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   login(credentials) {
-    return this.http.post(`${this.url}/api/login`, credentials).pipe(
+    return this.http.post(`${this.url}/users/login`, credentials).pipe(
       tap(res => {
         this.storage.set(TOKEN_KEY, res["token"]);
         this.user = this.helper.decodeToken(res["token"]);
@@ -75,7 +75,7 @@ export class AuthService {
   }
 
   getSpecialData() {
-    return this.http.get(`${this.url}/api/special`).pipe(
+    return this.http.get(`${this.url}/ping`).pipe(
       catchError(e => {
         let status = e.status;
         if (status === 401) {
@@ -94,7 +94,7 @@ export class AuthService {
   showAlert(msg) {
     let alert = this.alertController.create({
       message: msg,
-      header: "Error",
+      header: "Usuário Incorreto",
       buttons: ["OK"]
     });
     alert.then(alert => alert.present());
