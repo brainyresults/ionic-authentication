@@ -1,18 +1,16 @@
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
-import { AuthGuardService } from "./services/auth-guard.service";
+//import { AuthGuardService } from "./services/auth-guard.service";
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
-  { path: "login", redirectTo: "login" },
-  { path: "login", redirectTo: "login" },
 
   { path: "home", loadChildren: "./home/home.module#HomePageModule" },
   { path: "login", loadChildren: "./pages/login/login.module#LoginPageModule" },
   {
     path: "aluno",
-    loadChildren: "./pages/aluno/aluno.module#AlunoPageModule",
-    canActivate: [AuthGuardService]
+    loadChildren: "./pages/aluno/aluno.module#AlunoPageModule"
+    //canActivate: [AuthGuardService]
   },
   {
     path: "personal",
