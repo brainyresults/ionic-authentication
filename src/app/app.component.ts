@@ -31,7 +31,7 @@ export class AppComponent {
 
       this.authService.authenticationState.subscribe(state => {
         if (state) {
-          this.router.navigate(["inside"]);
+          this.router.navigate(["aluno"]);
         } else {
           this.router.navigate(["login"]);
         }
