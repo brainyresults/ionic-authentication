@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   register(credentials) {
-    return this.http.post(`${this.url}/users/register`, credentials).pipe(
+    return this.http.post(`${this.url}/users`, credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.msg);
         throw new Error(e);
@@ -100,7 +100,7 @@ export class AuthService {
   showAlert(msg) {
     let alert = this.alertController.create({
       message: msg,
-      header: "Usuário Incorreto",
+      header: "Ocorreu um erro",
       buttons: ["OK"]
     });
     alert.then(alert => alert.present());
