@@ -5,6 +5,8 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
@@ -28,6 +30,7 @@
     "@ionic/storage": "^2.2.0",
     "cordova-sqlite-storage": "3.2.1",
     "core-js": "^2.5.4",
+    "rimraf": "^2.6.3",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.29"
