@@ -6,6 +6,7 @@ import { Storage } from "@ionic/storage";
 import { environment } from "../../environments/environment";
 import { tap, catchError } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
+import { ToastController } from "@ionic/angular";
 
 const TOKEN_KEY = "access_token";
 
@@ -22,7 +23,8 @@ export class AuthService {
     private helper: JwtHelperService,
     private storage: Storage,
     private plt: Platform,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {
     this.plt.ready().then(() => {
       this.checkToken();
@@ -46,12 +48,22 @@ export class AuthService {
   }
 
   register(credentials) {
+    let toast = this.toastController.create({
+      message: "Usuário Cadastrado com sucesso",
+      duration: 3000
+    });
+    toast.then(toast => toast.present());
+
     return this.http.post(`${this.url}/users`, credentials).pipe(
       catchError(e => {
         this.showAlert(e.error.msg);
         throw new Error(e);
       })
     );
+  }
+
+  register2() {
+    this.register;
   }
 
   login(credentials) {
