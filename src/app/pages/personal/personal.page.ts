@@ -18,4 +18,7 @@ export class PersonalPage implements OnInit {
     this.user = this.authService.userState.value;
   }
 
+  logout() {
+    this.authService.logout();
+  }
 }
