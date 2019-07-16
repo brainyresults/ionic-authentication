@@ -15,12 +15,14 @@ import { UserService } from './services/user.service';
   templateUrl: "app.component.html"
 })
 export class AppComponent {
+  user:any;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     // user
-    private user: UserService,
+    private userService: UserService,
     //auth
     private authService: AuthService,
     private router: Router //final auth
@@ -29,18 +31,23 @@ export class AppComponent {
   }
 
   initializeApp() {
-    let that:any = this;
-
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
       this.authService.authenticationState.subscribe(state => {
+        let _routes:string[] = [];
+
         if (state) {
-          let me = this.user.getMe().then(res => {
-            console.log('me', res);
+          this.user = this.authService.userState.value;
+
+          if(this.user.tipo_user == 0){
             this.router.navigate(["aluno"]);
-          })
+          }
+          else if(this.user.tipo_user == 1){
+            this.router.navigate(["personal"]);
+          }
+
         } else {
           this.router.navigate(["login"]);
         }

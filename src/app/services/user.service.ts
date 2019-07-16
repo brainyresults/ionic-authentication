@@ -13,7 +13,6 @@ export class UserService {
 
   constructor(
     private http:HttpClient,
-    private authService: AuthService,
   ) { }
 
   async login(login:UserLogin):Promise<User>{

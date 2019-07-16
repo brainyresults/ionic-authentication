@@ -11,13 +11,17 @@ import { ToastController } from "@ionic/angular";
 })
 export class AlunoPage implements OnInit {
   data = "";
+  user:any;
+
   constructor(
     private authService: AuthService,
     private storage: Storage,
     private toastController: ToastController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.user = this.authService.userState.value;
+  }
 
   loadSpecialInfo() {
     this.authService.getSpecialData().subscribe(res => {

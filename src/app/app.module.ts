@@ -10,10 +10,13 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 
 //auth
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { Storage, IonicStorageModule } from "@ionic/storage";
 import { JwtModule, JWT_OPTIONS } from "@auth0/angular-jwt";
 import { AuthInterceptor } from './services/auth.interceptor';
+
+//services
+import { UserService } from "./services/user.service";
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -56,8 +59,17 @@ export function jwtOptionsFactory(storage) {
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi   : true,
-    },    
+    },
+    {
+      provide: UserService,
+      useFactory: getUserService,
+      deps: [HttpClient]
+    },
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+export function getUserService(http: HttpClient): UserService {
+  return new UserService(http);
+}

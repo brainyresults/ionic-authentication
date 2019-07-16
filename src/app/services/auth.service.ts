@@ -7,7 +7,8 @@ import { environment } from "../../environments/environment";
 import { tap, catchError } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
 import { ToastController } from "@ionic/angular";
-
+import { UserService } from "./user.service";
+import { inject } from '@angular/core/testing';
 const TOKEN_KEY = "access_token";
 
 @Injectable({
@@ -16,8 +17,9 @@ const TOKEN_KEY = "access_token";
 export class AuthService {
   token:string;
   url = environment.url;
-  user:any;
+  userProfile:any;
   authenticationState = new BehaviorSubject(false);
+  userState = new BehaviorSubject({});
 
   constructor(
     private http: HttpClient,
@@ -25,7 +27,8 @@ export class AuthService {
     private storage: Storage,
     private plt: Platform,
     private alertController: AlertController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private userService: UserService,
   ) {
     this.plt.ready().then(() => {
       this.checkToken();
@@ -36,6 +39,10 @@ export class AuthService {
     return this.token;
   }
   
+  getUser(){
+    return this.userState.value;
+  }
+
   checkToken() {
     this.storage.get(TOKEN_KEY).then(token => {
       if (token) {
@@ -43,10 +50,11 @@ export class AuthService {
         let isExpired = this.helper.isTokenExpired(token);
 
         if (!isExpired) {
-          this.user = decoded;
+          this.userProfile = decoded;
           this.authenticationState.next(true);
         } else {
           this.storage.remove(TOKEN_KEY);
+          this.authenticationState.next(false);
         }
       }
     });
@@ -67,19 +75,20 @@ export class AuthService {
     );
   }
 
-  register2() {
-    this.register;
-  }
-
   login(credentials) {
     return this.http.post(`${this.url}/users/login`, credentials).pipe(
-      tap(res => {
+      tap(async res => {
         this.token = res["token"];
         this.storage.set(TOKEN_KEY, res["token"]);
-        this.user = this.helper.decodeToken(res["token"]);
+        this.userProfile = this.helper.decodeToken(res["token"]);
+
+        let user = await this.userService.getUser(this.userProfile.id).then(res => {
+          this.userState.next(res);
+        });
         this.authenticationState.next(true);
       }),
       catchError(e => {
+        console.log(e);
         this.showAlert(e.error.msg);
         throw new Error(e);
       })
