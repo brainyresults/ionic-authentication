@@ -22,6 +22,13 @@ export class AuthInterceptor implements HttpInterceptor {
           'Authorization': `Bearer ${token}`,
         },
       });     
+    }else{
+      req = req.clone({
+        setHeaders: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+        },
+      });
     }
 
     return next.handle(req);

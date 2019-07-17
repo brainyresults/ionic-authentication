@@ -1,7 +1,11 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from '@angular/router';
+
 //auth
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
+// notify
+import { NotifyService } from "../../services/notify.service";
 
 @Component({
   selector: "app-login",
@@ -13,7 +17,9 @@ export class LoginPage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private notifyService: NotifyService,
   ) {}
 
   ngOnInit() {
@@ -23,10 +29,19 @@ export class LoginPage implements OnInit {
     });
   }
 
-  onSubmit() {
-    this.authService.login(this.credentialsForm.value).subscribe();
+  async onSubmit() {
+    await  this.notifyService.showLoading();
+    this.authService.login(this.credentialsForm.value).subscribe(async res => {
+      await this.notifyService.hideLoading();
+    });
   }
+
   register() {
-    this.authService.register(this.credentialsForm.value).subscribe();
+    this.router.navigate(['register']);
   }
+
+  cancelar(){
+    this.router.navigate(['login']);
+  }
+
 }

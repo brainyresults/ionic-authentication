@@ -20,7 +20,9 @@ export class UserService {
   }
 
   async addUser(user:User):Promise<User>{
-    return this.http.post<User>(`${environment.url}/users`, user).toPromise();
+    // usa uma chave para cadastrar o User sem autenticar antes
+    let key = environment.ADDUSER_SECRET_VALUE;
+    return this.http.post<User>(`${environment.url}/users?key=${key}`, user).toPromise();
   }
 
   listUsers():Observable<User[]>{
